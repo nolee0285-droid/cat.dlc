@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultra UI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #05010a;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* GRID BACKGROUND */
+.grid {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(168,85,247,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(168,85,247,0.07) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -3;
+}
+
+/* GLOW BLOBS */
+.glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(168,85,247,0.35), transparent 70%);
+    filter: blur(100px);
+    z-index: -2;
+    animation: moveGlow 20s infinite alternate;
+}
+
+.glow2 {
+    top: 50%;
+    left: 60%;
+    background: radial-gradient(circle, rgba(99,102,241,0.35), transparent 70%);
+}
+
+@keyframes moveGlow {
+    from {
+        transform: translate(-10%, -10%);
+    }
+    to {
+        transform: translate(20%, 20%);
+    }
+}
+
+/* PARTICLES */
+#particles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 22px;
+}
+
+.logo span {
+    color: #a855f7;
+}
+
+/* GLASS BUTTON */
+.btn {
+    padding: 12px 22px;
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: rgba(168,85,247,0.25);
+    box-shadow: 0 0 20px rgba(168,85,247,0.5);
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    margin-top: 120px;
+}
+
+.hero h1 {
+    font-size: 64px;
+    font-weight: 800;
+}
+
+.gradient {
+    background: linear-gradient(90deg, #c084fc, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    margin-top: 20px;
+    color: #aaa;
+}
+
+.hero .btn {
+    margin-top: 40px;
+}
+
+/* FEATURES */
+.features {
+    margin-top: 120px;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    backdrop-filter: blur(15px);
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 25px;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 30px rgba(168,85,247,0.3);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="grid"></div>
+<div class="glow"></div>
+<div class="glow glow2"></div>
+
+<canvas id="particles"></canvas>
+
+<header>
+    <div class="logo">CAT<span>.DLC</span></div>
+    <button class="btn" onclick="goTG()">Telegram</button>
+</header>
+
+<section class="hero">
+    <h1>
+        NUMBER ONE<br>
+        <span class="gradient">SOFTWARE</span><br>
+        ON 266 DEVBLOG
+    </h1>
+
+    <p>Современный продукт с мощным функционалом и поддержкой 24/7</p>
+
+    <button class="btn" onclick="goTG()">Узнать цены</button>
+</section>
+
+<section class="features">
+    <div class="card">
+        <h3>⚡ Быстро</h3>
+        <p>Максимальная производительность</p>
+    </div>
+
+    <div class="card">
+        <h3>🔄 Обновления</h3>
+        <p>Всегда актуально</p>
+    </div>
+
+    <div class="card">
+        <h3>🛡 Надёжно</h3>
+        <p>Стабильная работа</p>
+    </div>
+</section>
+
+<script>
+// TELEGRAM
+function goTG() {
+    window.open("https://t.me/catdlcdev", "_blank");
+}
+
+// PARTICLES
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for (let i = 0; i < 80; i++) {
+    particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: Math.random() * 0.5,
+        vy: Math.random() * 0.5,
+        size: Math.random() * 2
+    });
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = "#a855f7";
+        ctx.fill();
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
